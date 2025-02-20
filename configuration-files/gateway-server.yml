@@ -1,0 +1,48 @@
+server:
+  port: 9067
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AddResponseHeader=X-Powered-By, ThanhDat2804
+        - id: user-route
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+          filters:
+            - AddResponseHeader=X-Powered-By, ThanhDat2804
+        - id: music-route
+          uri: lb://music-service
+          predicates:
+            - Path=/music/**
+          filters:
+            - AddResponseHeader=X-Powered-By, ThanhDat2804
+        - id: music-route
+          uri: lb://messaging-service
+          predicates:
+            - Path=/messaging/**
+          filters:
+            - AddResponseHeader=X-Powered-By, ThanhDat2804
+        - id: music-route
+          uri: lb://task-scheduler-service
+          predicates:
+            - Path=/task-scheduler/**
+          filters:
+            - AddResponseHeader=X-Powered-By, ThanhDat2804
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true

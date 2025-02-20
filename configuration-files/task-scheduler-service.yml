@@ -1,0 +1,23 @@
+server:
+  port: 7040
+  servlet:
+    context-path: /music
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://${app.keycloak.domain}/realms/${app.keycloak.realm}
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: secret@1234
+jwt:
+  auth:
+    converter:
+      resource-id: authenticationClientId
+app:
+  keycloak:
+    realm: bisky-music
+    domain: keycloak.codewithbisky.com

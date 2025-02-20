@@ -1,0 +1,41 @@
+server:
+  port: 7010
+  servlet:
+    context-path: /messaging
+app:
+  dbHostName: localhost
+  dbPort: 3306
+  dbUsername: root
+  dbPassword: slidenerd
+  dbName: messaging
+  keycloak:
+    realm: bisky-music
+    domain: keycloak.codewithbisky.com
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://${app.keycloak.domain}/realms/${app.keycloak.realm}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${app.dbHostName}:${app.dbPort}/${app.dbName}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Europe/Rome&autoReconnect=true
+    username: ${app.dbUsername}
+    password: ${app.dbPassword}
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        storage_engine: innodb
+jwt:
+  auth:
+    converter:
+      resource-id: authenticationClientId
