@@ -1,3 +1,5 @@
+server:
+  port: 9067
 spring:
   profile:
     active: dev
