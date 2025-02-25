@@ -1,0 +1,35 @@
+server:
+  port: 7040
+  servlet:
+    context-path: /music
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${app.keycloak.domain}/realms/${app.keycloak.realm}
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: thanhdat2804
+  profiles:
+    active: dev
+  application:
+    name: music-service
+  cloud:
+    config:
+      name: music-service
+  config:
+    import: "optional:configserver:"
+
+jwt:
+  auth:
+    converter:
+      resource-id: authenticationClientId
+
+app:
+  keycloak:
+    realm: music
+    domain: localhost:8080
