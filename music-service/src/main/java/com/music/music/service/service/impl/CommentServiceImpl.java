@@ -3,8 +3,10 @@ package com.music.music.service.service.impl;
 import com.music.music.service.model.Comment;
 import com.music.music.service.repository.CommentRepository;
 import com.music.music.service.service.CommentService;
+import com.music.music.service.service.SentimentAnalyzer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,9 @@ import java.time.LocalDateTime;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final Neo4jClient neo4jClient;
+    private final SentimentAnalyzer sentimentAnalyzer;
+
     @Override
     public Comment create(Comment comment, String userId, String songId) {
 

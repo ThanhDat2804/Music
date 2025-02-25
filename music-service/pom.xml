@@ -60,7 +60,7 @@
 			<artifactId>spring-boot-starter-data-neo4j</artifactId>
 		</dependency>
 
-<!--		security-->
+		<!--security-->
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-security</artifactId>
@@ -74,7 +74,7 @@
 					<artifactId>spring-boot-configuration-processor</artifactId>
 					<optional>true</optional>
 				</dependency>
-<!--		security-->
+		<!--security-->
 
 		<!--swagger-->
 		<dependency>
@@ -83,6 +83,24 @@
 			<version>2.6.0</version>
 		</dependency>
 		<!--swagger-->
+
+		<!--langchain-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-kotlin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-spring-boot-starter</artifactId>
+			<version>0.33.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
+			<version>0.31.0</version>
+		</dependency>
+		<!--langchain-->
 
 	</dependencies>
 	<dependencyManagement>
