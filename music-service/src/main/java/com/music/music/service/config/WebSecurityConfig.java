@@ -1,4 +1,4 @@
-package com.music.auth.service.config;
+package com.music.music.service.config;
 
 import com.music.auth.service.config.JwtAuthConverter;
 import lombok.RequiredArgsConstructor;
