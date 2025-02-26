@@ -24,17 +24,21 @@ public class AlbumApi {
     }
 
     @PutMapping("/{albumId}/user/{userId}/like")
-    public  void userLikeAnAlbum(@PathVariable String albumId,
-                                 @PathVariable String userId){
+    public void userLikeAnAlbum(@PathVariable String albumId,
+                                @PathVariable String userId){
         albumService.userLikeAnAlbum(albumId,userId);
     }
 
 
-    @PutMapping("/{albumId}/user/{userId}/dislike")
-    public  void userDisLikeAAlbum(@PathVariable String albumId,
-                                   @PathVariable String userId){
+    @DeleteMapping("/{albumId}/user/{userId}/dislike")
+    public void userDisLikeAAlbum(@PathVariable String albumId,
+                                  @PathVariable String userId){
         albumService.userDikeLikeAnAlbum(albumId,userId);
     }
 
-
+    @PutMapping("/{albumId}/song/{songId}/add-to-album")
+    public void addSongToAlbum(@PathVariable String albumId,
+                               @PathVariable String userId){
+        albumService.userDikeLikeAnAlbum(albumId,userId);
+    }
 }

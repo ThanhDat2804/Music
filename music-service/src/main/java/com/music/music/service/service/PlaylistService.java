@@ -1,6 +1,9 @@
 package com.music.music.service.service;
 
 import com.music.music.service.model.Playlist;
+import com.music.music.service.model.projection.PlaylistWithSongProjection;
+
+import java.util.List;
 
 public interface PlaylistService {
 
@@ -9,4 +12,5 @@ public interface PlaylistService {
     void addSongIntoPlaylist(String playlistId, String songId);
     void removeSongFromPlaylist(String playlistId, String songId);
 
+    List<PlaylistWithSongProjection> getPlaylistsByUserId(String userId);
 }

@@ -1,6 +1,7 @@
 package com.music.music.service.repository;
 
 import com.music.music.service.model.Album;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +31,11 @@ public interface AlbumRepository extends Neo4jRepository<Album,String> {
                                   @Param("albumId") String albumId,
                                   @Param("year") Integer year,
                                   @Param("createdAt") LocalDateTime createdAt);
+
+    @Query("MATCH (song:Song {id: $songId}), (IS_IN:Album {id: $albumId})" +
+            " MERGE (song)-[:IS_IN {createdAt: $createdAt}]->(IS_IN)")
+    void addSongToAlbum(@Param("songId") String songId,
+                        @Param("albumId") String albumId,
+                        @Param("createdAt")LocalDateTime createdAt);
+
 }

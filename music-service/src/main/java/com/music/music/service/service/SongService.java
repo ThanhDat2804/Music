@@ -8,7 +8,7 @@ public interface SongService {
     Song create(SongRecord songRecord, String artistId);
     void deleteById(String id);
 
-    void userLikeASong(String songId,String userId);
-    void userDisLikeASong(String songId,String userId);
-
+    void userLikeASong(String songId, String userId);
+    void userDisLikeASong(String songId, String userId);
+    void userPlaysASong(String songId, String userId);
 }

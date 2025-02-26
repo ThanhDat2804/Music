@@ -1,3 +1,4 @@
+package com.music.music.service.api;
 
 import com.music.music.service.model.Album;
 import com.music.music.service.model.Comment;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CommentApi {
 
-    private  final CommentService commentService;
+    private final CommentService commentService;
 
     @PostMapping("/song/{songId}/user/{userId}")
     public ResponseEntity<Album> createNewComment(@RequestBody Comment comment,

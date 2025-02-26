@@ -6,6 +6,7 @@ import com.music.music.service.service.AlbumService;
 import com.music.music.service.service.YearService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,8 @@ public class AlbumServiceImpl implements AlbumService {
 
     private final AlbumRepository albumRepository;
     private final YearService yearService;
+    private final Neo4jClient neo4jClient;
+
     @Override
     public Album create(Album album, Integer releasedYear, String artistId) {
 
@@ -52,4 +55,11 @@ public class AlbumServiceImpl implements AlbumService {
 
         albumRepository.userDislikeAlbum(userId,albumId);
     }
+
+    @Override
+    public void addSongToAlbum(String albumId, String songId) {
+        albumRepository.addSongToAlbum(albumId,songId,LocalDateTime.now());
+    }
+
+
 }

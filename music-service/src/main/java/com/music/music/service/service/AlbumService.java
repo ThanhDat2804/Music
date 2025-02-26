@@ -8,4 +8,5 @@ public interface AlbumService {
     void deleteById(String id);
     void userLikeAnAlbum(String albumId,String userId);
     void userDikeLikeAnAlbum(String albumId,String userId);
+    void addSongToAlbum(String albumId, String songId);
 }

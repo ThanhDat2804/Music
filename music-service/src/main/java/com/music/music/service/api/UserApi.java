@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserApi {
 
-    private  final UserService userService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<UserRegistrationRequestRecord> createNewUser(@RequestBody UserRegistrationRequestRecord requestRecord){
@@ -21,15 +21,13 @@ public class UserApi {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
     @PutMapping("/{userId}/artist/{artistId}/follow")
-    public  void followArtist(@PathVariable String userId,@PathVariable String artistId){
+    public void followArtist(@PathVariable String userId,@PathVariable String artistId){
         userService.userFollowArtist(userId,artistId);
     }
 
-
-    @PutMapping("/{userId}/artist/{artistId}/unfollow")
-    public  void unfollowArtist(@PathVariable String userId,@PathVariable String artistId){
+    @DeleteMapping("/{userId}/artist/{artistId}/unfollow")
+    public void unfollowArtist(@PathVariable String userId,@PathVariable String artistId){
         userService.userUnFollowArtist(userId,artistId);
     }
 }

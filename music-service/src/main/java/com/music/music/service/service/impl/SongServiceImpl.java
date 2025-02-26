@@ -61,4 +61,9 @@ public class SongServiceImpl implements SongService {
         repository.userDisLikeASong(songId,userId);
 
     }
+
+    @Override
+    public void userPlaysASong(String songId, String userId) {
+        repository.userPlaysASong(songId,userId,LocalDateTime.now(),1);
+    }
 }

@@ -33,12 +33,12 @@ public class GenreApi {
         genreService.addSongToGenre(genreId,songId);
     }
 
-    @PutMapping("/{genreId}/artist/{artistId}/un-assign-artist")
+    @DeleteMapping("/{genreId}/artist/{artistId}/unassign-artist")
     public void removeArtistFromGenre(@PathVariable String genreId, @PathVariable String artistId) {
 
         genreService.removeArtistFromGenre(genreId,artistId);
     }
-    @PutMapping("/{genreId}/song/{songId}/un-assign-song")
+    @DeleteMapping("/{genreId}/song/{songId}/un-assign-song")
     public void removeSongFromGenre(@PathVariable String genreId, @PathVariable String songId) {
 
         genreService.removeSongFromGenre(genreId,songId);
