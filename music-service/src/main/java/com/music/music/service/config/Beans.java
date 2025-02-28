@@ -15,6 +15,7 @@ public class Beans {
         return org.neo4j.cypherdsl.core.renderer.Configuration.newConfig()
                 .withDialect(Dialect.NEO4J_5).build();
     }
+
     @Bean
     public SentimentAnalyzer sentimentAnalyzer(ChatLanguageModel chatLanguageModel) {
         return AiServices.create(SentimentAnalyzer.class, chatLanguageModel);

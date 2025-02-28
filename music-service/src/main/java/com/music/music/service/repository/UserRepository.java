@@ -49,6 +49,14 @@ public interface UserRepository extends Neo4jRepository<User,String> {
             @Param("name") String name,
             @Param("countryIso2") String countryIso2
     );
+    @Query("""
+    MATCH (user:User {id:$userId}), (song:Song {id:$songId})
+    MATCH (song)<-[:CREATED]-(artist:Artist)
+    MATCH (user)-[relationship:FOLLOWS]->(artist)
+    return count(relationship) >= 1
+    """)
+    boolean isUserFollowsTheArtist(@Param("userId") String userId, @Param("songId") String songId);
+
 
 
 }

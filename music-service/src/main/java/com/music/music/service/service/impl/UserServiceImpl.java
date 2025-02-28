@@ -74,4 +74,9 @@ public class UserServiceImpl implements UserService {
     public void userUnFollowArtist(String userId, String artistId) {
         userRepository.userUnFollowArtist(userId,artistId);
     }
+
+    @Override
+    public boolean isUserFollowingArtist(String userId, String artistId) {
+        return userRepository.isUserFollowsTheArtist(userId,artistId);
+    }
 }

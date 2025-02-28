@@ -1,5 +1,6 @@
 package com.music.music.service.service.impl;
 
+import com.music.music.service.dto.GenreDto;
 import com.music.music.service.model.Genre;
 import com.music.music.service.repository.GenreRepository;
 import com.music.music.service.service.GenreService;
@@ -20,6 +21,11 @@ public class GenreServiceImpl implements GenreService {
 
 
         return genreRepository.save(Genre.builder().name(genre.getName()).key(genre.getKey()).build());
+    }
+
+    @Override
+    public Genre update(String id, GenreDto genre) {
+        return genreRepository.updateGenre(id ,genre.getKey(), genre.getName());
     }
 
 

@@ -84,23 +84,27 @@
 		</dependency>
 		<!--swagger-->
 
-		<!--langchain-->
+		<!-- langchain4j -->
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-kotlin</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-spring-boot-starter</artifactId>
-			<version>0.33.0</version>
+			<version>0.24.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
-			<version>0.31.0</version>
+			<version>0.30.0</version>
 		</dependency>
-		<!--langchain-->
+
+		<!-- langchain4j -->
+
 
 	</dependencies>
 	<dependencyManagement>

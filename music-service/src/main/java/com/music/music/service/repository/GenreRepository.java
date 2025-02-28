@@ -24,4 +24,14 @@ public interface GenreRepository extends Neo4jRepository<Genre,String> {
     @Query("MATCH (genre: Genre {id: $genreId})<-[relationship:BELONGS_TO_GENRE]-(artist: Artist {id: $artistId})" +
             " DELETE relationship")
     void removeArtistFromGenre(@Param("genreId") String genreId, @Param("artistId")String artistId);
+
+    @Query("""
+    MATCH (genre: Genre {id: $genreId})
+    SET genre.key = $key
+    SET genre.name = $name
+    RETURN genre""")
+    Genre updateGenre(@Param("genreId") String genreId,
+                      @Param("key") String key,
+                      @Param("name") String name);
+
 }
