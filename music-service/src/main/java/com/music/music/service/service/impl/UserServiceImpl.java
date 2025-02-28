@@ -1,6 +1,7 @@
 package com.music.music.service.service.impl;
 
 import com.music.music.service.dto.UserRegistrationRequestRecord;
+import com.music.music.service.dto.UserUpdateRequestRecord;
 import com.music.music.service.model.Artist;
 import com.music.music.service.model.User;
 import com.music.music.service.model.projection.UserProjection;
@@ -45,6 +46,17 @@ public class UserServiceImpl implements UserService {
         }
         return save;
     }
+
+    @Override
+    public User update(String id, UserUpdateRequestRecord user) {
+        Optional<UserProjection> userProjectionOptional = userRepository.findByIdProjection(id);
+        if (userProjectionOptional.isPresent()) {
+            throw new RuntimeException(String.format("User with id %s does not exist", id));
+
+        }
+        return userRepository.updateUser(id, user.gender(), user.dob(), user.language(), user.name(), user.countryIso2());
+    }
+
 
     @Override
     public void deleteByUserId(String id) {

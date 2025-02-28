@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -33,6 +34,21 @@ public interface UserRepository extends Neo4jRepository<User,String> {
     void userUnFollowArtist(@Param("userId")String userId,
                             @Param("artistId") String artistId);
 
+    @Query("MATCH(user: User {id: $userId})\n" +
+            "SET user.gender = $gender\n" +
+            "SET user.dob = $dob\n" +
+            "SET user.language = $language\n" +
+            "SET user.name = $name\n" +
+            "SET user.countryIso2 = $countryIso2\n" +
+            "RETURN user")
+    User updateUser(
+            @Param("userId") String userId,
+            @Param("gender") String gender,
+            @Param("dob") LocalDate dob,
+            @Param("language") String language,
+            @Param("name") String name,
+            @Param("countryIso2") String countryIso2
+    );
 
 
 }

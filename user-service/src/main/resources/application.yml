@@ -6,24 +6,22 @@ server:
 app:
   dbHostName: localhost
   dbPort: 3306
-  dbUsername: ${DB_USERNAME}
-  dbPassword: ${DB_PASSWORD}
+  dbUsername: root
+  dbPassword: root
   dbName: users_db
   keycloak:
-    realm: bisky-music
-    domain: keycloak.codewithbisky.com
+    realm: music
+    domain: localhost:8080
 
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://${app.keycloak.domain}/realms/${app.keycloak.realm}
+          issuer-uri: http://${app.keycloak.domain}/realms/${app.keycloak.realm}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${app.dbHostName}:${app.dbPort}/${app.dbName}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Europe/Rome&autoReconnect=true
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
     hikari:
       validation-timeout: 5000
   jpa:
@@ -34,7 +32,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         storage_engine: innodb
   profiles:
     active: dev
@@ -55,4 +53,4 @@ bunny-net:
   storagePrimaryUrl: https://storage.bunnycdn.com
   storageCdnBaseUrl:
   storageZone: music
-  storageUrlApiKey: ${BUNNY_API_KEY}
+#  storageUrlApiKey: ${BUNNY_API_KEY}

@@ -1,11 +1,15 @@
 package com.music.music.service.api;
 
+import com.music.music.service.dto.AlbumDto;
 import com.music.music.service.model.Album;
+import com.music.music.service.model.projection.AlbumWithSongProjection;
 import com.music.music.service.service.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/albums")
@@ -17,9 +21,17 @@ public class AlbumApi {
     @PostMapping("/artist/{artistId}")
     public ResponseEntity<Album> createNewAlbum(@RequestBody Album requestRecord,
                                                 @PathVariable String artistId,
-                                                @RequestParam Integer releasedYear){
+                                                @RequestParam Integer releasedYear) {
 
         albumService.create(requestRecord,releasedYear,artistId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{artistId}")
+    public ResponseEntity<Album> updateAlbum(@RequestBody String albumId ,
+                                                @RequestBody AlbumDto album) {
+
+        albumService.update(albumId, album);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -32,13 +44,18 @@ public class AlbumApi {
 
     @DeleteMapping("/{albumId}/user/{userId}/dislike")
     public void userDisLikeAAlbum(@PathVariable String albumId,
-                                  @PathVariable String userId){
+                                  @PathVariable String userId) {
         albumService.userDikeLikeAnAlbum(albumId,userId);
     }
 
     @PutMapping("/{albumId}/song/{songId}/add-to-album")
     public void addSongToAlbum(@PathVariable String albumId,
-                               @PathVariable String userId){
+                               @PathVariable String userId) {
         albumService.userDikeLikeAnAlbum(albumId,userId);
+    }
+
+    @GetMapping("/artist/{artistId}/album-songs")
+    public List<AlbumWithSongProjection> addSongToAlbum(@PathVariable String artistId) {
+       return albumService.getAlbumWithSongs(artistId);
     }
 }

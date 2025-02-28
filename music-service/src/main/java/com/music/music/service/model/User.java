@@ -1,5 +1,6 @@
 package com.music.music.service.model;
 
+import com.music.music.service.model.relationship.FollowRelationship;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

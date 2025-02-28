@@ -1,6 +1,6 @@
 package com.music.music.service.config;
 
-import com.music.auth.service.config.JwtAuthConverter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

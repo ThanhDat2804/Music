@@ -1,5 +1,6 @@
 package com.music.music.service.service.impl;
 
+import com.music.music.service.dto.PlaylistDto;
 import com.music.music.service.dto.SongProjectionDto;
 import com.music.music.service.model.Playlist;
 import com.music.music.service.model.projection.PlaylistWithSongProjection;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.music.music.service.repository.PlaylistRepository.GET_USER_PLAYLISTS_QUERY;
@@ -35,6 +35,13 @@ public class PlaylistServiceImpl implements PlaylistService {
         Playlist saved = playlistRepository.save(playlist1);
         playlistRepository.addPlaylistAndUserRelationship(saved.getId(), userId, LocalDateTime.now());
         return saved;
+    }
+
+    @Override
+    public Playlist update(String id, PlaylistDto playlist) {
+
+        //TODO: projection find by ID
+        return playlistRepository.updatePlaylist(id, playlist.getTitle(), playlist.getDescription());
     }
 
     @Override

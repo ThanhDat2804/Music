@@ -1,6 +1,7 @@
 package com.music.music.service.repository;
 
 import com.music.music.service.model.Song;
+import com.music.music.service.model.SongType;
 import com.music.music.service.model.projection.SongProjection;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -10,6 +11,22 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface SongRepository extends Neo4jRepository<Song, String> {
+
+    String GET_ARTIST_SONGS = "MATCH (artist:Artist {id: $artistId})-[:CREATED]->(song:Song)\n" +
+            "OPTIONAL MATCH (song)-[releasedYear:RELEASED_IN]->(year:Year)\n" +
+            "return \n" +
+            "    artist.id as artistId,\n" +
+            "    song.id as id,\n" +
+            "    song.name as name,\n" +
+            "    song.description as description,\n" +
+            "    song.status as status,\n" +
+            "    song.duration as duration,\n" +
+            "    song.storageId as storageId,\n" +
+            "    song.storageType as storageType,\n" +
+            "    song.type as type,\n" +
+            "    year.year as year\n" +
+            "SKIP $page\n" +
+            "LIMIT $pageSize;";
 
     @Query("MATCH (song:Song {id: $songId}) " +
             "RETURN song.id AS id, " +
@@ -22,6 +39,7 @@ public interface SongRepository extends Neo4jRepository<Song, String> {
             "song.type AS type, " +
             "song.year AS year")
     Optional<SongProjection> findByProjection(@Param("songId") String id);
+
 
 
     @Query("MATCH (song:Song {id: $songId}), (user: User {id: $userId}) " +
@@ -46,5 +64,24 @@ public interface SongRepository extends Neo4jRepository<Song, String> {
                        @Param("createdAtOrUpdatedAt") LocalDateTime createdAtOrUpdatedAt,
                        @Param("counter") Integer counter);
 
+    @Query("MATCH (song: Song {id: $songId}), (year: Year {year: $releasedYear}) " +
+            "MERGE (song)-[relationship:RELEASED_IN]->(year) " +
+            "SET song.name = $name " +
+            "SET song.description = $description " +
+            "SET song.releaseDate = $releasedDate " +
+            "SET song.type = $type " +
+            "RETURN song")
+    Song updateSong(@Param("songId") String songId,
+                    @Param("description") String description,
+                    @Param("name") String name,
+                    @Param("releasedDate") LocalDateTime releasedDate,
+                    @Param("type") SongType type,
+                    @Param("releasedYear") Integer releasedYear
+    );
+
+    @Query("MATCH (song:Song {id: $songId})-[relationship:RELEASED_IN]->(year:Year) " +
+            "DELETE relationship")
+    void removeSongReleasedYear(@Param("songId") String songId,
+                                @Param("year") Integer year);
 
 }

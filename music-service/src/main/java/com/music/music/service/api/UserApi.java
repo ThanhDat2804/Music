@@ -1,6 +1,7 @@
 package com.music.music.service.api;
 
 import com.music.music.service.dto.UserRegistrationRequestRecord;
+import com.music.music.service.dto.UserUpdateRequestRecord;
 import com.music.music.service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,24 @@ public class UserApi {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserRegistrationRequestRecord> updateUser(@PathVariable String userId,
+                                                                    @RequestBody UserUpdateRequestRecord requestRecord){
+
+        userService.update(userId, requestRecord);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PutMapping("/{userId}/artist/{artistId}/follow")
-    public void followArtist(@PathVariable String userId,@PathVariable String artistId){
+    public void followArtist(@PathVariable String userId,
+                             @PathVariable String artistId){
         userService.userFollowArtist(userId,artistId);
     }
 
     @DeleteMapping("/{userId}/artist/{artistId}/unfollow")
-    public void unfollowArtist(@PathVariable String userId,@PathVariable String artistId){
+    public void unfollowArtist(@PathVariable String userId,
+                               @PathVariable String artistId){
         userService.userUnFollowArtist(userId,artistId);
     }
 }

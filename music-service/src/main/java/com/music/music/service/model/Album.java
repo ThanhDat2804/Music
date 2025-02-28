@@ -9,6 +9,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Node("Album")
@@ -23,7 +24,7 @@ public class Album {
     private String description;
     private String name;
     private Status status;
-
+    private LocalDateTime releasedDate;
     @Relationship(type = "IS_IN",direction = Relationship.Direction.INCOMING)
     private Set<Song> songs;
 

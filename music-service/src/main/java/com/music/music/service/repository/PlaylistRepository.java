@@ -42,4 +42,16 @@ public interface PlaylistRepository extends Neo4jRepository<Playlist,String> {
             " DELETE relationship")
     void removeSongFromPlaylist(@Param("playlistId")String playlistId,
                                 @Param("songId")String songId);
+    @Query("""
+    MATCH (playlist: Playlist {id: $playlistId})
+    SET playlist.description = $description
+    SET playlist.title = $title
+    RETURN playlist
+""")
+    Playlist updatePlaylist(
+            @Param("playlistId") String playlistId,
+            @Param("description") String description,
+            @Param("title") String title
+    );
+
 }

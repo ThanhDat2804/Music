@@ -1,5 +1,6 @@
 package com.music.music.service.api;
 
+import com.music.music.service.dto.PlaylistDto;
 import com.music.music.service.model.Album;
 import com.music.music.service.model.Playlist;
 import com.music.music.service.model.projection.PlaylistWithSongProjection;
@@ -22,6 +23,13 @@ public class PlaylistApi {
     public ResponseEntity<Album> createNewAPlaylist(@RequestBody Playlist requestRecord,
                                                     @PathVariable String userId){
         playlistService.create(requestRecord,userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("{playlistId}")
+    public ResponseEntity<Playlist> updatePlaylist(@RequestBody PlaylistDto requestRecord,
+                                                   @PathVariable String playlistId){
+        playlistService.update(playlistId, requestRecord);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

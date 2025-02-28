@@ -2,9 +2,7 @@ package com.music.music.service.dto;
 
 import java.time.LocalDate;
 
-public record UserRegistrationRequestRecord(
-
-        boolean artist,
+public record UserUpdateRequestRecord(
 
         String id,
 
@@ -16,6 +14,5 @@ public record UserRegistrationRequestRecord(
 
         String language,
 
-        String countryIso2
-) {
+        String countryIso2) {
 }

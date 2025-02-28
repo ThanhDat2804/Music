@@ -1,52 +1,35 @@
 package com.music.auth.service.config;
 
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
-import java.util.Collections;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@SecurityScheme(
-        name = "Bearer Authentication",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-)
 public class SwaggerCustomConfig {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
+    }
 
     @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(apiInfo())
-                .security(Collections.singletonList(new SecurityRequirement().addList(AUTHORIZATION_HEADER))
-                );
-    }
-
-    private Info apiInfo() {
-        return new Info()
-                .title("Auth Service APIs")
-                .description("APIs listed here are used by web and mobile, for general functionalities.")
-                .version("1.0")
-                .contact(apiContact())
-                .license(apiLicence());
-    }
-
-    private License apiLicence() {
-        return new License()
-                .name("Licensed to ThanhDat2804");
-    }
-
-    private Contact apiContact() {
-        return new Contact()
-                .name(" User Support")
-                .email("lethanhdat.2804@gmail.com");
+    public OpenAPI openAPI() {
+        return new OpenAPI().addSecurityItem(new SecurityRequirement().
+                        addList("Bearer Authentication"))
+                .components(new Components().addSecuritySchemes
+                        ("Bearer Authentication", createAPIKeyScheme()))
+                .info(new Info().title("My REST API")
+                        .description("Spring Integration API.")
+                        .version("1.0").contact(new Contact().name("Code With Bisky")
+                                .email( "www.codewithbisky.com").url("codewithbisky@gmail.com"))
+                        .license(new License().name("License of API")
+                                .url("API license URL")));
     }
 }

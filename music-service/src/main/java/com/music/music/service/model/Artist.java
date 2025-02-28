@@ -1,5 +1,7 @@
 package com.music.music.service.model;
 
+import com.music.music.service.model.relationship.AlbumRelationship;
+import com.music.music.service.model.relationship.ArtistRelationship;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

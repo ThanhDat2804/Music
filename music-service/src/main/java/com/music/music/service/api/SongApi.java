@@ -1,11 +1,15 @@
 package com.music.music.service.api;
 
+import com.music.music.service.dto.SongDto;
+import com.music.music.service.dto.SongProjectionDto;
 import com.music.music.service.dto.SongRecord;
 import com.music.music.service.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/songs")
@@ -19,6 +23,14 @@ public class SongApi {
                                                     @PathVariable String artistId){
 
         songService.create(requestRecord,artistId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SongRecord> updateSong(@RequestBody SongDto requestRecord,
+                                                    @PathVariable String id){
+
+        songService.update(id, requestRecord);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -39,5 +51,12 @@ public class SongApi {
     public void userPlaysASong(@PathVariable String songId,
                                   @PathVariable String userId){
         songService.userPlaysASong(songId,userId);
+    }
+
+    @GetMapping("/artisy/{artistId}/songs")
+    public List<SongProjectionDto> userPlaysASong(@PathVariable String artistId,
+                                                  @RequestParam Integer page,
+                                                  @RequestParam Integer pageSize){
+       return songService.getArtistSongs(artistId, page, pageSize);
     }
 }
