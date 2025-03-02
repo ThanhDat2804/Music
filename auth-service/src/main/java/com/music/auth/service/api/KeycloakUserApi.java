@@ -26,6 +26,7 @@ public class KeycloakUserApi {
 
         return keycloakUserService.getUserById(principal.getName());
     }
+
     @GetMapping("/{userId}")
     public UserRepresentation getUserById(@PathVariable String userId) {
 

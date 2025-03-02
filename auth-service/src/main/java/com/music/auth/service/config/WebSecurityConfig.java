@@ -20,6 +20,7 @@ public class WebSecurityConfig {
     public static final String GENERAL = "general";
     private final JwtAuthConverter jwtAuthConverter;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -36,6 +37,8 @@ public class WebSecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
+
+    @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
 
         return (web) -> {

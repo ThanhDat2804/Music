@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    active: production  # Choose either 'dev' or 'production', not both
+  profile:
+    active: dev
   application:
     name: auth-service
   cloud:
@@ -8,27 +8,3 @@ spring:
       name: auth-service
   config:
     import: "optional:configserver:"
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://${keycloak.domain}/realms/${keycloak.realm}
-
-server:
-  port: 7090
-  servlet:
-    context-path: /auth
-
-jwt:
-  auth:
-    converter:
-      resource-id: authenticationClientId
-
-keycloak:
-  realm: music
-  domain: localhost:8080
-  adminClientId: admin-cli
-  adminClientSecret: WP0T6aYkw2w4SbpVNNkSmbY0D33LI23i
-  client: authenticationClientId
-  urls:
-    auth: http://${keycloak.domain}

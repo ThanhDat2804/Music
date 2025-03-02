@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-@SpringBootApplication(scanBasePackages = {"com.music.*","org.springdoc"})
 
+@SpringBootApplication(scanBasePackages = {"com.music.auth.*","org.springdoc"})
 public class AuthServiceApplication {
 
 	public static void main(String[] args) {
