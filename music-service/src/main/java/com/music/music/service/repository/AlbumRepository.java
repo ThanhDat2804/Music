@@ -1,6 +1,7 @@
 package com.music.music.service.repository;
 
 import com.music.music.service.model.Album;
+import com.music.music.service.model.Status;
 import com.music.music.service.model.projection.AlbumProjection;
 import com.music.music.service.model.projection.UserProjection;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
@@ -33,6 +34,18 @@ public interface AlbumRepository extends Neo4jRepository<Album,String> {
                } END
            ) as songs
     """;
+
+    String GET_ALBUM_SONGS_QUERY = """
+MATCH (album:Album {id: $albumId})-[:IS_IN]->(song:Song)
+RETURN song.id as id,
+       song.name as name,
+       song.description as description,
+       song.releasedDate as releasedDate,
+       song.storageId as storageId,
+       song.storageType as storageType,
+       song.type as type,
+       song.status as status
+""";
 
     @Query("MATCH (user:User {id: $userId})" +
             "            MATCH (album:Album {id: $albumId})" +
@@ -98,5 +111,7 @@ public interface AlbumRepository extends Neo4jRepository<Album,String> {
             @Param("year") Integer year
     );
 
+    @Query("MATCH (album:Album {id: $albumId}) SET album.status = $status RETURN album")
+    Album updateAlbumStatus(@Param("albumId") String albumId, @Param("status") Status status);
 
 }

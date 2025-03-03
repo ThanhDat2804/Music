@@ -8,6 +8,7 @@ import com.music.music.service.repository.CommentRepository;
 import com.music.music.service.repository.UserRepository;
 import com.music.music.service.service.CommentService;
 import com.music.music.service.service.SentimentAnalyzer;
+import com.music.music.service.service.UserService;
 import com.music.music.service.utils.JsonUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.music.music.service.repository.CommentRepository.GET_SONG_COMMENTS_QUERY;
@@ -27,9 +29,9 @@ import static com.music.music.service.repository.CommentRepository.GET_SONG_COMM
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final Neo4jClient neo4jClient;
     private final SentimentAnalyzer sentimentAnalyzer;
+    private final UserService userService;
 
     @Override
     public Comment create(Comment comment, String userId, String songId) {
@@ -49,14 +51,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private void analyzeComment(Comment saved, String userId, String songId) {
+        try {
+            boolean userInterestedWithTheArtist = userService.isUserInterestWithTheArtist(userId, songId);
 
-        boolean userFollowsTheArtist = userRepository.isUserFollowsTheArtist(userId, songId);
+            if(userInterestedWithTheArtist) {
+                Sentiment sentiment = sentimentAnalyzer.analyzeSentimentOf(saved.getText());
 
-        if(!userFollowsTheArtist){
-            Sentiment sentiment = sentimentAnalyzer.analyzeSentimentOf(saved.getText());
-            System.out.println("The comment is " + sentiment);
+                if(Objects.equals(sentiment, Sentiment.POSITIVE) || Objects.equals(sentiment, Sentiment.NEUTRAL)) {
+                    userService.userInterestWithArtistBySongId(userId, songId);
+                } else {
+                    System.out.println("User has interest " + userId);
+                }
+            } else {
+                System.out.println("User follows artist >>>> user=" + userId);
+            }
+        } catch (Exception e) {
+            log.error("CommentServiceImpl analyzeComment", e);
         }
-
     }
 
     @Override

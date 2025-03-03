@@ -1,11 +1,17 @@
 package com.music.music.service.service.impl;
 
 import com.music.music.service.dto.AlbumDto;
+import com.music.music.service.dto.PublishResponseDto;
+import com.music.music.service.dto.ReleaseDto;
+import com.music.music.service.dto.SongProjectionDto;
 import com.music.music.service.model.Album;
+import com.music.music.service.model.Song;
+import com.music.music.service.model.Status;
 import com.music.music.service.model.projection.AlbumProjection;
 import com.music.music.service.model.projection.AlbumWithSongProjection;
 import com.music.music.service.repository.AlbumRepository;
 import com.music.music.service.service.AlbumService;
+import com.music.music.service.service.SongService;
 import com.music.music.service.service.YearService;
 import com.music.music.service.utils.JsonUtility;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +21,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.music.music.service.model.Status.DRAFT;
+import static com.music.music.service.repository.AlbumRepository.GET_ALBUM_SONGS_QUERY;
 import static com.music.music.service.repository.AlbumRepository.GET_ALBUM_WITH_SONGS_QUERY;
 import static java.util.Objects.isNull;
 
@@ -30,6 +38,7 @@ public class AlbumServiceImpl implements AlbumService {
     private final AlbumRepository albumRepository;
     private final YearService yearService;
     private final Neo4jClient neo4jClient;
+    private final SongService songService;
 
     @Override
     public Album create(Album album, Integer releasedYear, String artistId) {
@@ -90,7 +99,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<AlbumWithSongProjection> getAlbumWithSongs(String artistId) {
+    public List<SongProjectionDto> getAlbumSongs(String artistId) {
         neo4jClient.query(GET_ALBUM_WITH_SONGS_QUERY)
                 .bind(artistId).to("artistId")
                 .fetch()
@@ -102,4 +111,39 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
 
+    @Override
+    public List<AlbumWithSongProjection> getAlbumWithSongs(String albumId) {
+        neo4jClient.query(GET_ALBUM_SONGS_QUERY)
+                .bind(albumId).to("albumId")
+                .fetch()
+                .all()
+                .stream()
+                .map(map -> JsonUtility.fromMap(map, SongProjectionDto.class))
+                .collect(Collectors.toList());
+        return null;
+    }
+
+
+    @Override
+    public PublishResponseDto releaseAlbum(String id, ReleaseDto releaseDto) {
+        if(!Objects.equals(Status.SCHEDULED, releaseDto.getStatus())){
+            //TODO: call task scheduler to create a task
+            LocalDateTime releaseDate = releaseDto.getReleaseDate();
+
+        }
+        return updateStatus(id, Status.PUBLISHED);
+    }
+
+    @Override
+    public PublishResponseDto updateStatus(String id, Status status) {
+        Album album = albumRepository.updateAlbumStatus(id, status);
+        List<SongProjectionDto> songProjectionDtoList = getAlbumSongs(id);
+        songProjectionDtoList.forEach(songProjectionDto -> {
+            songService.updateStatus(songProjectionDto.getId(), status);
+        });
+        return PublishResponseDto.builder()
+                .isSuccess(true)
+                .id(id)
+                .build();
+    }
 }

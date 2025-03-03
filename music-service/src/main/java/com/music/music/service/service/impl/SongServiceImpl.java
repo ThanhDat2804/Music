@@ -1,8 +1,6 @@
 package com.music.music.service.service.impl;
 
-import com.music.music.service.dto.SongDto;
-import com.music.music.service.dto.SongProjectionDto;
-import com.music.music.service.dto.SongRecord;
+import com.music.music.service.dto.*;
 import com.music.music.service.model.Song;
 import com.music.music.service.model.Status;
 import com.music.music.service.repository.SongRepository;
@@ -12,11 +10,13 @@ import com.music.music.service.service.YearService;
 import com.music.music.service.utils.JsonUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.music.music.service.repository.SongRepository.GET_ARTIST_SONGS;
@@ -105,5 +105,25 @@ public class SongServiceImpl implements SongService {
                 .map(map -> JsonUtility.fromMap(map, SongProjectionDto.class))
                 .collect(Collectors.toList());
         return List.of();
+    }
+
+    @Override
+    public PublishResponseDto updateStatus(String id, Status status) {
+        repository.updateSongStatus(id, status);
+        return PublishResponseDto.builder()
+                .isSuccess(true)
+                .id(id)
+                .build();
+    }
+
+    @Override
+    public PublishResponseDto releaseSong(String id, ReleaseDto releaseDto) {
+
+        if(!Objects.equals(Status.SCHEDULED, releaseDto.getStatus())){
+            //TODO: call task scheduler to create a task
+            LocalDateTime releaseDate = releaseDto.getReleaseDate();
+
+        }
+        return updateStatus(id, Status.PUBLISHED);
     }
 }

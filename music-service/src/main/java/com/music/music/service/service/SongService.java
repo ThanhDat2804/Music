@@ -1,10 +1,11 @@
 package com.music.music.service.service;
 
-import com.music.music.service.dto.SongDto;
-import com.music.music.service.dto.SongProjectionDto;
-import com.music.music.service.dto.SongRecord;
+import com.music.music.service.dto.*;
 import com.music.music.service.model.Song;
+import com.music.music.service.model.Status;
+import software.amazon.awssdk.core.async.listener.PublisherListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SongService {
@@ -22,4 +23,8 @@ public interface SongService {
     void userPlaysASong(String songId, String userId);
 
     List<SongProjectionDto> getArtistSongs(String artistId, Integer page, Integer pageSize);
+
+    PublishResponseDto updateStatus(String id, Status status);
+
+    PublishResponseDto releaseSong(String id, ReleaseDto releaseDto);
 }

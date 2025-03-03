@@ -2,6 +2,7 @@ package com.music.music.service.repository;
 
 import com.music.music.service.model.Song;
 import com.music.music.service.model.SongType;
+import com.music.music.service.model.Status;
 import com.music.music.service.model.projection.SongProjection;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -84,4 +85,8 @@ public interface SongRepository extends Neo4jRepository<Song, String> {
     void removeSongReleasedYear(@Param("songId") String songId,
                                 @Param("year") Integer year);
 
+    @Query("MATCH (song:Song {id: $songId}) " +
+            "SET song.status = $status " +
+            "RETURN song")
+    Song updateSongStatus(@Param("songId") String songId, @Param("status") Status status);
 }
